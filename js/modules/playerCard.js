@@ -1,0 +1,75 @@
+import { Globals } from "../globals.js";
+import { Template } from "../system/template.js";
+import { ScoreSaber, BeatLeader } from "../system/api-call.js";
+export class PlayerCard {
+    constructor() {
+        this.playerCardGames = {
+            beatSaber: true,
+            synthRiders: false,
+            audioTrip: false,
+            audica: false,
+            adofai: false
+        };
+        this.playerCardData = {
+            disabled: false,
+            display: false,
+            alwaysEnabled: false,
+            needUpdate: true,
+            endedUpdate: false,
+            skin: "default",
+            position: 1,
+            scale: 1.0,
+            pos_x: 0,
+            pos_y: 0,
+            scoringSystem: 1,
+            playerID: Globals.DEFAULT_PLAYERID,
+            playerName: "Default Player",
+            playerCountry: "FR",
+            avatar: "./pictures/default/notFound.jpg",
+            playerFlag: "./pictures/country/FR.svg",
+            topWorld: "96",
+            topCountry: "69",
+            performancePoint: "17,357.35"
+        };
+        this._template = new Template();
+        this._scoreSaber = new ScoreSaber();
+        this._beatLeader = new BeatLeader();
+    }
+    async updatePlayerInfo() {
+        if (!this.playerCardData.needUpdate || this.playerCardData.playerID === Globals.DEFAULT_PLAYERID)
+            return;
+        this.playerCardData.needUpdate = false;
+        let data;
+        if (this.playerCardData.scoringSystem === Globals.E_SCORING_SYSTEM.BEATLEADER)
+            data = await this._beatLeader.getPlayerInfo(this.playerCardData.playerID);
+        else
+            data = await this._scoreSaber.getPlayerInfo(this.playerCardData.playerID);
+        if (data.errorMessage !== undefined)
+            return;
+        this.playerCardData.playerName = data.name;
+        this.playerCardData.playerCountry = data.country;
+        this.playerCardData.avatar = ("profilePicture" in data) ? data.profilePicture : data.avatar;
+        this.playerCardData.playerFlag = "./pictures/country/" + data.country + ".svg";
+        this.playerCardData.topWorld = data.rank.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.playerCardData.topCountry = data.countryRank.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.playerCardData.performancePoint = data.pp.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.playerCardData.endedUpdate = true;
+    }
+    refreshPlayerCard() {
+        if (!this.playerCardGames.beatSaber || this.playerCardData.disabled || this.playerCardData.playerID === Globals.DEFAULT_PLAYERID) {
+            this.playerCardData.disabled = true;
+            this.playerCardData.display = false;
+            return;
+        }
+        this.updatePlayerInfo().then(() => {
+            this._template.refreshUI(this.playerCardData, Globals.E_MODULES.PLAYERCARD);
+            this.playerCardData.endedUpdate = false;
+            this._template.moduleScale(Globals.E_MODULES.PLAYERCARD, this.playerCardData.position, this.playerCardData.scale);
+            this._template.moduleCorners(Globals.E_MODULES.PLAYERCARD, this.playerCardData.position);
+            this._template.modulePosition(Globals.E_MODULES.PLAYERCARD, this.playerCardData.pos_x, this.playerCardData.pos_y, true);
+        });
+    }
+    static get Instance() {
+        return this._instance || (this._instance = new this());
+    }
+}

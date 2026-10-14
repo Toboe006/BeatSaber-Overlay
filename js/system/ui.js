@@ -1,0 +1,33 @@
+import { Globals } from "../globals.js";
+import { Template } from "./template.js";
+import { PlayerCard } from "../modules/playerCard.js";
+import { SongCard } from "../modules/songCard.js";
+import { Leaderboard } from "../modules/leaderboard.js";
+export class UI {
+    constructor() {
+        this._template = new Template();
+        this._playerCard = PlayerCard.Instance;
+        this._songCard = SongCard.Instance;
+        this._leaderboard = Leaderboard.Instance;
+    }
+    async initUI() {
+        if (!this._playerCard.playerCardData.disabled)
+            await this._template.loadSkin(Globals.E_MODULES.PLAYERCARD, this._playerCard.playerCardData.skin);
+        if (!this._songCard.songCardData.disabled)
+            await this._template.loadSkin(Globals.E_MODULES.SONGCARD, this._songCard.songCardData.skin);
+        if (!this._leaderboard.leaderboardData.disabled)
+            await this._template.loadSkin(Globals.E_MODULES.LEADERBOARD, this._leaderboard.leaderboardData.skin);
+    }
+    refreshUI() {
+        setInterval(() => {
+            if (!this._playerCard.playerCardData.disabled)
+                this._playerCard.refreshPlayerCard();
+            if (!this._songCard.songCardData.disabled)
+                this._songCard.refreshSongCard();
+            if (!this._leaderboard.leaderboardData.disabled)
+                this._leaderboard.refreshLeaderboard();
+            if (!this._playerCard.playerCardData.disabled || !this._songCard.songCardData.disabled)
+                this._template.moduleToggleDisplay(this._playerCard.playerCardData, this._songCard.songCardData);
+        }, Globals.FPS_REFRESH);
+    }
+}
