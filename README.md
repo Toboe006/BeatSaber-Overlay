@@ -16,7 +16,7 @@
 
 <div id="top"></div>
 
-# BeatSaber-Overlay
+# BeatSaber-Overlay [ORIGNAL by hyldrazolxy]
 <hr />
 
 <div align="center">
