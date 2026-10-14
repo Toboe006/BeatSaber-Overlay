@@ -25,3 +25,6 @@ package-lock.json
 /js/system/websockets/plugins/synthriders/*.js
 
 /js/system/utils/*.js
+
+# Local server settings (saved ?token= links)
+/data/

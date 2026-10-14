@@ -1,3 +1,21 @@
+# Beat Saber Overlay - MultiGames (local-run fork)
+
+> **This is a fork of [HyldraZolxy/BeatSaber-Overlay](https://github.com/HyldraZolxy/BeatSaber-Overlay) (branch `MultiGames`), all credit for the overlay goes to Hyldra Zolxy.**
+> The original project was archived on 1 March 2026 and its hosted site (`overlay.hyldrazolxy.fr`) no longer works.
+> This fork only adds what is needed to run the overlay **entirely on your own PC**. The original README follows below, unchanged.
+> The original package metadata lists the licence as ISC; the upstream repository has no LICENSE file.
+
+## What this fork changes
+- `server.mjs` + `start.bat`: a small Node.js server that replaces the original PHP/MySQL back end (settings behind `?token=` links are saved in `data/tokens.json`; ScoreSaber/BeatLeader lookups are proxied with a 2-minute cache). See [LOCAL-SETUP.md](LOCAL-SETUP.md).
+- `bsplus.ts`: BeatSaberPlus support fixed. Upstream pointed it at the author's own LAN address (`192.168.1.153`) and its handler never updated the song card. It now uses localhost and forwards messages to the older working parser (`js/games/beatSaber/BSPlus.ts`).
+- `setup.ts`: the copy-link button now builds a link to your local server instead of the dead hosted site.
+- `tsconfig.json` + `js/jquery-shim.d.ts`: compile without installing `@types/jquery`.
+
+Tested with a real game through BeatSaberPlus. HttpSiraStatus and DataPuller were only tested with simulated data.
+Known limits: the "IP" setting is ignored (every websocket address is hardcoded to 127.0.0.1), and AudioTrip cover art needs the author's private database.
+
+---
+
 <div id="top"></div>
 
 # Multigames-Overlay (DEV)

@@ -1,5 +1,6 @@
 import { WebSocketManager } from '../../websocketsManager.js';
 import { LoggerService }    from '../../../utils/logger.js';
+import { BSPlus }           from '../../../../games/beatSaber/BSPlus.js';
 import {
     GameStateEvent_P, HandshakeEvent_P, HandshakeEvent_S, MapInfoEvent_P, PauseEvent_P, PlayerJoinedEvent_S, PlayerUpdatedEvent_S, ResumeEvent_P, RoomStateEvent_S, ScoreEvent_P, ScoreEvent_S, WebsocketPrimaryMessage, WebsocketSecondaryMessage
 } from '../types/beatsaber/bsplus';
@@ -8,6 +9,7 @@ export class BsPlusPlugin {
     private readonly key: string;
     private manager     : WebSocketManager;
     private logger      : LoggerService;
+    private _bsPlus     = new BSPlus(); // Draws the song card (the new handlers below only store data)
 
     private secondaryWebsocketLaunched: boolean = false;
 
@@ -57,7 +59,7 @@ export class BsPlusPlugin {
         this.key     = 'bsplus';
 
         // Initialize the WebSocket with plugin-specific message handler
-        this.manager.initialize(`${this.key}-primary`, 'ws://192.168.1.153:2947/socket', this.handlePrimaryMessage.bind(this));
+        this.manager.initialize(`${this.key}-primary`, 'ws://127.0.0.1:2947/socket', this.handlePrimaryMessage.bind(this));
 
         this.songCardMapInfo = new Map();
 
@@ -67,7 +69,7 @@ export class BsPlusPlugin {
 
     private secondarySocketLauncher(): void {
         if (!this.secondaryWebsocketLaunched) {
-            this.manager.initialize(`${this.key}-secondary`, 'ws://192.168.1.153:2948/socket', this.handleSecondaryMessage.bind(this));
+            this.manager.initialize(`${this.key}-secondary`, 'ws://127.0.0.1:2948/socket', this.handleSecondaryMessage.bind(this));
             this.secondaryWebsocketLaunched = true;
 
             setTimeout(() => {
@@ -84,6 +86,15 @@ export class BsPlusPlugin {
         this.secondarySocketLauncher(); // Launch the secondary socket of Beat Saber Plus
 
         let messageParsed: WebsocketPrimaryMessage = JSON.parse(message);
+
+        // Different BeatSaberPlus versions name the map info "mapInfoChanged" or "mapInfoEvent"; accept both.
+        const anyMessage = messageParsed as any;
+        if (anyMessage.mapInfoEvent && !anyMessage.mapInfoChanged) anyMessage.mapInfoChanged = anyMessage.mapInfoEvent;
+        if (anyMessage.mapInfoChanged && !anyMessage.mapInfoEvent) anyMessage.mapInfoEvent   = anyMessage.mapInfoChanged;
+
+        // Update the song card / player card (the handlers below do not do it yet in this branch)
+        this._bsPlus.dataParser(JSON.stringify(messageParsed));
+
         this.routePrimaryMessage(messageParsed);
     }
 

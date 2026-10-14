@@ -938,7 +938,7 @@ export class Setup {
     }
 
     private async urlTextBuilder() {
-        let url = (this._parameters.uriParams.general.ip === "127.0.0.1") ? "https://testoverlay.hyldrazolxy.fr/" : "http://testoverlay.hyldrazolxy.fr/";
+        let url = window.location.origin + "/";
 
         if (this._parameters.uriParams.general.token !== "") {
             if (!await this._parameters.updateTokenParameters()) await this._parameters.saveTokenParameters();
