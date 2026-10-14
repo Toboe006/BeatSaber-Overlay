@@ -18,7 +18,7 @@ Known limits: the "IP" setting is ignored (every websocket address is hardcoded 
 
 <div id="top"></div>
 
-# Multigames-Overlay (DEV)
+# Multigames-Overlay (DEV) [ORIGNAL by hyldrazolxy]
 ### Beat Saber | Audica | AudioTrip | SynthRiders | A Dance of Fire and Ice (Adofai)
 <hr />
 
@@ -63,5 +63,3 @@ Older version of Beat Saber
 
 </div>
 <hr />
-
-# README IS ON REWRITE PROCESS, IF YOU HAVE ANY QUESTION, DM ME ON DISCORD: hyldrazolxy
