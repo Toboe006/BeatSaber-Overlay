@@ -171,5 +171,5 @@ Thanks to:
 - @reselim for giving me the permission to copy the skin of his Beat Saber Overlay <3
 
 ##### Thanks all and cya <3
-If you like the overlay, you can support me on <a href="https://ko-fi.com/hyldrazolxy"><strong>Ko-fi</strong></a>! I really appreciate it :3<br />
+If you like the overlay, you can support hyldrazolxy on <a href="https://ko-fi.com/hyldrazolxy"><strong>Ko-fi</strong></a>! I really appreciate it :3<br />
 <p align="right">(<a href="#top">back to top</a>)</p>
