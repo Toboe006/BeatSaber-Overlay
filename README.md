@@ -28,7 +28,7 @@
       -
       <a href="https://github.com/HyldraZolxy/BeatSaber-Overlay/issues">Request Feature</a>
       -
-      <a href="https://ko-fi.com/hyldrazolxy">Support me on Ko-fi! <3</a>
+      <a href="https://ko-fi.com/hyldrazolxy">Support hyldrazolxy on Ko-fi! <3</a>
    </p>
 </div>
 
