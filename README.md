@@ -1,3 +1,19 @@
+# Beat Saber Overlay (original version) - local-run fork
+
+> **This is a fork of [HyldraZolxy/BeatSaber-Overlay](https://github.com/HyldraZolxy/BeatSaber-Overlay), all credit for the overlay goes to Hyldra Zolxy.**
+> The original project was archived on 1 March 2026 and its hosted site (`overlay.hyldrazolxy.fr`) no longer works.
+> This branch only adds what is needed to run the overlay **entirely on your own PC**. The original README follows below, unchanged.
+> For the newer multi-game version (Beat Saber, Synth Riders, AudioTrip, Audica, Adofai) see the `MultiGames` branch.
+> The original package metadata lists the licence as ISC; the upstream repository has no LICENSE file.
+
+## What this fork changes
+- `server.mjs` + `start.bat`: a small Node.js server that serves the page and replaces the PHP ScoreSaber proxy. See [LOCAL-SETUP.md](LOCAL-SETUP.md).
+- `js/setup.ts` / `index.html`: the copy-link button builds a link to your local server instead of the dead hosted site.
+- `tsconfig.json` + `js/jquery-shim.d.ts`: compile without installing `@types/jquery`.
+- Compiled `js/*.js` are included so no build step is needed.
+
+---
+
 <div id="top"></div>
 
 # BeatSaber-Overlay
